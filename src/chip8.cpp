@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <fstream>
 
+#define GET_OPCODE() (((uint16_t)memory[pc++]) << 8 | memory[pc++])
+
 Chip8::Chip8() {
     // nothing to initilize yet
 }
