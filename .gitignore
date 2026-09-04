@@ -2,3 +2,4 @@
 bin/*
 roms/
 *.exe
+build/

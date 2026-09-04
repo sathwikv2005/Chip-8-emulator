@@ -1,3 +1,4 @@
+#include "chip8.hpp"
 #include "renderer.hpp"
 
 int main() {
@@ -10,4 +11,6 @@ int main() {
     //     chip8.cycle();
     //     renderer.render();
     // }
+
+    return 0;
 }
