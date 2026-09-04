@@ -17,4 +17,6 @@ class Chip8 {
 
     // current opcode
     uint16_t opcode{};
+
+    void executeOpCode();
 };

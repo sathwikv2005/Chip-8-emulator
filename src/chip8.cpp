@@ -21,3 +21,5 @@ void Chip8::loadROM(const std::string& path) {
 
     file.read(reinterpret_cast<char*>(memory.data() + 0x200), size);
 }
+
+void Chip8::executeOpCode() {}
