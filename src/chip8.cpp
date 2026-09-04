@@ -59,8 +59,10 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x1000:  // 1NNN - JP addr
+        {
             pc = nnn;
             break;
+        }
 
         case 0x2000:  // 2NNN - CALL addr
             break;
@@ -75,11 +77,16 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x6000:  // 6XNN - LD Vx, byte
+        {
             v[x] = nn;
             break;
+        }
 
         case 0x7000:  // 7XNN - ADD Vx, byte
+        {
+            v[x] += nn;
             break;
+        }
 
         case 0x8000:
             switch (n) {
