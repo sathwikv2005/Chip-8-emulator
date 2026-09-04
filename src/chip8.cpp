@@ -4,6 +4,10 @@
 #include <cstdint>
 #include <fstream>
 
+Chip8::Chip8() {
+    // nothing to initilize yet
+}
+
 void Chip8::loadROM(const std::string& path) {
     std::ifstream file(path, std::ios::binary | std::ios::ate);
 
