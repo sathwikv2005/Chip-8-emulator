@@ -8,6 +8,9 @@ class Chip8 {
     Chip8();
     void loadROM(const std::string& path);
 
+    const std::array<uint64_t, 32>& getDisplay() const;
+    void clearDisplay();
+
    private:
     // 4KB RAM
     std::array<uint8_t, 4096> memory{};

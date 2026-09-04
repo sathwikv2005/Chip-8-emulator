@@ -24,6 +24,10 @@ void Chip8::loadROM(const std::string& path) {
     file.read(reinterpret_cast<char*>(memory.data() + 0x200), size);
 }
 
+const std::array<uint64_t, 32>& Chip8::getDisplay() const { return display; }
+
+void Chip8::clearDisplay() { display.fill(0); }
+
 void Chip8::executeOpCode() {
     opcode = GET_OPCODE();
 
