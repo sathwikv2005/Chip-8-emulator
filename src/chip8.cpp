@@ -41,7 +41,7 @@ void Chip8::executeOpCode() {
         case 0x0000:
             switch (opcode) {
                 case 0x00E0:  // CLS
-                    // clear screen
+                    clearDisplay();
                     break;
 
                 case 0x00EE:  // RET
