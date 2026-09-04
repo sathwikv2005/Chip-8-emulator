@@ -122,9 +122,32 @@ void Chip8::executeOpCode() {
         case 0xC000:  // CXNN - RND Vx, byte
             break;
 
-        case 0xD000:  // DXYN - DRW Vx, Vy, nibble
-            break;
+        case 0xD000: {  // DXYN - DRW Vx, Vy, nibble
+            uint8_t xPos = v[x];
+            uint8_t yPos = v[y];
 
+            v[0xF] = 0;
+
+            for (uint8_t row = 0; row < n; ++row) {
+                uint8_t sprite = memory[I + row];
+
+                uint8_t screenY = (yPos + row) % 32;
+
+                for (uint8_t col = 0; col < 8; ++col) {
+                    if ((sprite & (0x80 >> col)) == 0) continue;
+
+                    uint8_t screenX = (xPos + col) % 64;
+
+                    uint64_t mask = uint64_t{1} << (63 - screenX);
+
+                    if (display[screenY] & mask) v[0xF] = 1;
+
+                    display[screenY] ^= mask;
+                }
+            }
+
+            break;
+        }
         case 0xE000:
             switch (nn) {
                 case 0x9E:  // EX9E - SKP Vx
