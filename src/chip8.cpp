@@ -59,6 +59,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x1000:  // 1NNN - JP addr
+            pc = nnn;
             break;
 
         case 0x2000:  // 2NNN - CALL addr
