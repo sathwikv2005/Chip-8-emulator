@@ -27,6 +27,12 @@ void Chip8::loadROM(const std::string& path) {
 void Chip8::executeOpCode() {
     opcode = GET_OPCODE();
 
+    uint8_t x = (opcode & 0x0F00) >> 8;
+    uint8_t y = (opcode & 0x00F0) >> 4;
+    uint8_t n = opcode & 0x000F;
+    uint8_t nn = opcode & 0x00FF;
+    uint16_t nnn = opcode & 0x0FFF;
+
     switch (opcode & 0xF000) {
         case 0x0000:
             switch (opcode) {
@@ -70,7 +76,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x8000:
-            switch (opcode & 0x000F) {
+            switch (n) {
                 case 0x0:  // 8XY0 - LD Vx, Vy
                     break;
 
@@ -116,7 +122,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0xE000:
-            switch (opcode & 0x00FF) {
+            switch (nn) {
                 case 0x9E:  // EX9E - SKP Vx
                     break;
 
@@ -126,7 +132,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0xF000:
-            switch (opcode & 0x00FF) {
+            switch (nn) {
                 case 0x07:  // FX07 - LD Vx, DT
                     break;
 
