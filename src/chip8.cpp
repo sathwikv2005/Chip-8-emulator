@@ -6,6 +6,7 @@
 
 #define GET_OPCODE() (((uint16_t)memory[pc++]) << 8 | memory[pc++])
 #define ADVANCE() (pc += 2)
+#define VF v[0xf]
 
 Chip8::Chip8() {
     // load font
@@ -141,7 +142,7 @@ void Chip8::executeOpCode() {
                 {
                     uint16_t sum = v[x] + v[y];
 
-                    v[0xF] = sum > 0xFF;
+                    VF = sum > 0xFF;
                     v[x] = sum & 0xFF;
 
                     break;
@@ -149,27 +150,27 @@ void Chip8::executeOpCode() {
 
                 case 0x5:  // 8XY5 - SUB Vx, Vy
                     if (v[x] >= v[y])
-                        v[0xf] = 1;
+                        VF = 1;
                     else
-                        v[0xf] = 0;
+                        VF = 0;
                     v[x] -= v[y];
                     break;
 
                 case 0x6:  // 8XY6 - SHR Vx
-                    v[0xF] = v[x] & 1;
+                    VF = v[x] & 1;
                     v[x] >>= 1;
                     break;
 
                 case 0x7:  // 8XY7 - SUBN Vx, Vy
                     if (v[y] >= v[x])
-                        v[0xf] = 1;
+                        VF = 1;
                     else
-                        v[0xf] = 0;
+                        VF = 0;
                     v[x] = v[y] - v[x];
                     break;
 
                 case 0xE:  // 8XYE - SHL Vx
-                    v[0xF] = (v[x] & 0x80) >> 7;
+                    VF = (v[x] & 0x80) >> 7;
                     v[x] <<= 1;
                     break;
             }
@@ -195,7 +196,7 @@ void Chip8::executeOpCode() {
             uint8_t xPos = v[x];
             uint8_t yPos = v[y];
 
-            v[0xF] = 0;
+            VF = 0;
 
             for (uint8_t row = 0; row < n; ++row) {
                 uint8_t sprite = memory[I + row];
@@ -209,7 +210,7 @@ void Chip8::executeOpCode() {
 
                     uint64_t mask = uint64_t{1} << (63 - screenX);
 
-                    if (display[screenY] & mask) v[0xF] = 1;
+                    if (display[screenY] & mask) VF = 1;
 
                     display[screenY] ^= mask;
                 }
