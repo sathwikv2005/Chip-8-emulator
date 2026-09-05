@@ -43,3 +43,67 @@ void Renderer::render() {
 
     SDL_RenderPresent(renderer);
 }
+
+void Renderer::processInput() {
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+        if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP) continue;
+
+        bool pressed = event.type == SDL_KEYDOWN;
+
+        switch (event.key.keysym.sym) {
+            case SDLK_1:
+                cpu.setKey(0x1, pressed);
+                break;
+            case SDLK_2:
+                cpu.setKey(0x2, pressed);
+                break;
+            case SDLK_3:
+                cpu.setKey(0x3, pressed);
+                break;
+            case SDLK_4:
+                cpu.setKey(0xC, pressed);
+                break;
+
+            case SDLK_q:
+                cpu.setKey(0x4, pressed);
+                break;
+            case SDLK_w:
+                cpu.setKey(0x5, pressed);
+                break;
+            case SDLK_e:
+                cpu.setKey(0x6, pressed);
+                break;
+            case SDLK_r:
+                cpu.setKey(0xD, pressed);
+                break;
+
+            case SDLK_a:
+                cpu.setKey(0x7, pressed);
+                break;
+            case SDLK_s:
+                cpu.setKey(0x8, pressed);
+                break;
+            case SDLK_d:
+                cpu.setKey(0x9, pressed);
+                break;
+            case SDLK_f:
+                cpu.setKey(0xE, pressed);
+                break;
+
+            case SDLK_z:
+                cpu.setKey(0xA, pressed);
+                break;
+            case SDLK_x:
+                cpu.setKey(0x0, pressed);
+                break;
+            case SDLK_c:
+                cpu.setKey(0xB, pressed);
+                break;
+            case SDLK_v:
+                cpu.setKey(0xF, pressed);
+                break;
+        }
+    }
+}

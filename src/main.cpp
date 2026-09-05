@@ -28,6 +28,8 @@ void run(const char* path) {
     const double timerPeriod = 1.0 / TIMER_DECAY;
 
     while (true) {
+        renderer.processInput();
+
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration<double>(now - lastCycle);
         while (elapsed.count() >= cyclePeriod) {

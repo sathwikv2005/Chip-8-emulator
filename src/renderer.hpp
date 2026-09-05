@@ -9,6 +9,7 @@ class Renderer {
     ~Renderer();
 
     void render();
+    void processInput();
 
    private:
     Chip8& cpu;
