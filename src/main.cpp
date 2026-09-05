@@ -30,7 +30,7 @@ void run(const char* path) {
     while (true) {
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration<double>(now - lastCycle);
-        if (elapsed.count() >= cyclePeriod) {
+        while (elapsed.count() >= cyclePeriod) {
             chip8.cycle();
 
             // add cyclePeriod instead of setting it to `now` to prevent timing
@@ -39,7 +39,7 @@ void run(const char* path) {
         }
 
         auto renderElapsed = std::chrono::duration<double>(now - lastRender);
-        if (renderElapsed.count() >= renderPeriod) {
+        while (renderElapsed.count() >= renderPeriod) {
             renderer.render();
 
             // add renderPeriod instead of setting it to `now` to prevent timing
@@ -49,14 +49,14 @@ void run(const char* path) {
         auto delayElapsed = std::chrono::duration<double>(now - lastDelayDecay);
         auto soundElapsed = std::chrono::duration<double>(now - lastSoundDecay);
 
-        if (delayElapsed.count() >= timerPeriod) {
+        while (delayElapsed.count() >= timerPeriod) {
             chip8.decayDelayTimer();
 
             // add timerPeriod instead of setting it to `now` to prevent timing
             // drift.
             lastDelayDecay += TO_STEADY_DURATION(timerPeriod);
         }
-        if (soundElapsed.count() >= timerPeriod) {
+        while (soundElapsed.count() >= timerPeriod) {
             chip8.decaySoundTimer();
 
             // add timerPeriod instead of setting it to `now` to prevent timing
