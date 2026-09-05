@@ -7,6 +7,11 @@
 
 #define CPU_CYCLES_PER_SEC 500
 #define DISPLAY_REFRESH_RATE 60
+#define TIMER_DECAY 60
+
+#define TO_STEADY_DURATION(period)                                    \
+    (std::chrono::duration_cast<std::chrono::steady_clock::duration>( \
+        std::chrono::duration<double>(period)))
 
 void run(const char* path) {
     Chip8 chip8;
@@ -16,10 +21,12 @@ void run(const char* path) {
 
     auto lastCycle = std::chrono::steady_clock::now();
     auto lastRender = std::chrono::steady_clock::now();
+    auto lastDelayDecay = std::chrono::steady_clock::now();
+    auto lastSoundDecay = std::chrono::steady_clock::now();
 
     const double cyclePeriod = 1.0 / CPU_CYCLES_PER_SEC;
-
     const double renderPeriod = 1.0 / DISPLAY_REFRESH_RATE;
+    const double timerPeriod = 1.0 / TIMER_DECAY;
 
     while (true) {
         auto now = std::chrono::steady_clock::now();
@@ -29,9 +36,7 @@ void run(const char* path) {
 
             // add cyclePeriod instead of setting it to `now` to prevent timing
             // drift.
-            lastCycle +=
-                std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-                    std::chrono::duration<double>(cyclePeriod));
+            lastCycle += TO_STEADY_DURATION(cyclePeriod);
         }
 
         auto renderElapsed = std::chrono::duration<double>(now - lastRender);
@@ -40,9 +45,24 @@ void run(const char* path) {
 
             // add renderPeriod instead of setting it to `now` to prevent timing
             // drift.
-            lastRender +=
-                std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-                    std::chrono::duration<double>(renderPeriod));
+            lastRender += TO_STEADY_DURATION(renderPeriod);
+        }
+        auto delayElapsed = std::chrono::duration<double>(now - lastDelayDecay);
+        auto soundElapsed = std::chrono::duration<double>(now - lastSoundDecay);
+
+        if (delayElapsed.count() >= timerPeriod) {
+            chip8.decayDelayTimer();
+
+            // add timerPeriod instead of setting it to `now` to prevent timing
+            // drift.
+            lastDelayDecay += TO_STEADY_DURATION(timerPeriod);
+        }
+        if (soundElapsed.count() >= timerPeriod) {
+            chip8.decaySoundTimer();
+
+            // add timerPeriod instead of setting it to `now` to prevent timing
+            // drift.
+            lastSoundDecay += TO_STEADY_DURATION(timerPeriod);
         }
     }
 }
