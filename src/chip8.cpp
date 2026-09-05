@@ -122,30 +122,55 @@ void Chip8::executeOpCode() {
         case 0x8000:
             switch (n) {
                 case 0x0:  // 8XY0 - LD Vx, Vy
+                    v[x] = v[y];
                     break;
 
                 case 0x1:  // 8XY1 - OR
+                    v[x] |= v[y];
                     break;
 
                 case 0x2:  // 8XY2 - AND
+                    v[x] &= v[y];
                     break;
 
                 case 0x3:  // 8XY3 - XOR
+                    v[x] ^= v[y];
                     break;
 
                 case 0x4:  // 8XY4 - ADD Vx, Vy
+                {
+                    uint16_t sum = v[x] + v[y];
+
+                    v[0xF] = sum > 0xFF;
+                    v[x] = sum & 0xFF;
+
                     break;
+                }
 
                 case 0x5:  // 8XY5 - SUB Vx, Vy
+                    if (v[x] >= v[y])
+                        v[0xf] = 1;
+                    else
+                        v[0xf] = 0;
+                    v[x] -= v[y];
                     break;
 
                 case 0x6:  // 8XY6 - SHR Vx
+                    v[0xF] = v[x] & 1;
+                    v[x] >>= 1;
                     break;
 
                 case 0x7:  // 8XY7 - SUBN Vx, Vy
+                    if (v[y] >= v[x])
+                        v[0xf] = 1;
+                    else
+                        v[0xf] = 0;
+                    v[x] = v[y] - v[x];
                     break;
 
                 case 0xE:  // 8XYE - SHL Vx
+                    v[0xF] = (v[x] & 0x80) >> 7;
+                    v[x] <<= 1;
                     break;
             }
             break;
