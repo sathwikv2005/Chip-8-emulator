@@ -27,9 +27,7 @@ void run(const char* path) {
     const double renderPeriod = 1.0 / DISPLAY_REFRESH_RATE;
     const double timerPeriod = 1.0 / TIMER_DECAY;
 
-    while (true) {
-        renderer.processInput();
-
+    while (renderer.processInput()) {
         auto now = std::chrono::steady_clock::now();
 
         while (std::chrono::duration<double>(now - lastCycle).count() >=

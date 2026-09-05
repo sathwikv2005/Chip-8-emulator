@@ -44,10 +44,11 @@ void Renderer::render() {
     SDL_RenderPresent(renderer);
 }
 
-void Renderer::processInput() {
+bool Renderer::processInput() {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) return false;
         if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP) continue;
 
         bool pressed = event.type == SDL_KEYDOWN;
@@ -106,4 +107,5 @@ void Renderer::processInput() {
                 break;
         }
     }
+    return true;
 }
