@@ -7,7 +7,8 @@
 #define GET_OPCODE() (((uint16_t)memory[pc++]) << 8 | memory[pc++])
 
 Chip8::Chip8() {
-    // nothing to initilize yet
+    // load font
+    std::copy(FONT.begin(), FONT.end(), memory.begin() + FONT_START);
 }
 
 void Chip8::cycle() { executeOpCode(); }
