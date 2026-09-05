@@ -6,6 +6,7 @@
 #include "renderer.hpp"
 
 #define CPU_CYCLES_PER_SEC 500
+#define DISPLAY_REFRESH_RATE 60
 
 void run(const char* path) {
     Chip8 chip8;
@@ -14,9 +15,11 @@ void run(const char* path) {
     chip8.loadROM(path);
 
     auto lastCycle = std::chrono::steady_clock::now();
+    auto lastRender = std::chrono::steady_clock::now();
 
-    // cpu cycles per second
     const double cycleTime = 1.0 / CPU_CYCLES_PER_SEC;
+
+    const double renderTime = 1.0 / DISPLAY_REFRESH_RATE;
 
     while (true) {
         auto now = std::chrono::steady_clock::now();
@@ -30,7 +33,17 @@ void run(const char* path) {
                 std::chrono::duration_cast<std::chrono::steady_clock::duration>(
                     std::chrono::duration<double>(cycleTime));
         }
-        renderer.render();
+
+        auto renderElapsed = std::chrono::duration<double>(now - lastRender);
+        if (renderElapsed.count() >= renderTime) {
+            renderer.render();
+
+            // add renderTime instead of setting it to `now` to prevent timing
+            // drifts.
+            lastRender +=
+                std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+                    std::chrono::duration<double>(renderTime));
+        }
     }
 }
 
