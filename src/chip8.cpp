@@ -33,6 +33,14 @@ const std::array<uint64_t, 32>& Chip8::getDisplay() const { return display; }
 
 void Chip8::clearDisplay() { display.fill(0); }
 
+void Chip8::decayDelayTimer() {
+    if (delayTimer > 0) delayTimer--;
+}
+
+void Chip8::decaySoundTimer() {
+    if (soundTimer > 0) soundTimer--;
+}
+
 void Chip8::executeOpCode() {
     opcode = GET_OPCODE();
 

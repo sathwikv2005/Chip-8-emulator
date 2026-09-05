@@ -12,6 +12,9 @@ class Chip8 {
     const std::array<uint64_t, 32>& getDisplay() const;
     void clearDisplay();
 
+    void decayDelayTimer();
+    void decaySoundTimer();
+
    private:
     // 4KB RAM
     std::array<uint8_t, 4096> memory{};
@@ -27,6 +30,10 @@ class Chip8 {
 
     // index register
     uint16_t I{};
+
+    // timers
+    uint8_t delayTimer{};
+    uint8_t soundTimer{};
 
     // a chip-8 program starts from the memory address 0x200.
     uint16_t pc{0x200};
