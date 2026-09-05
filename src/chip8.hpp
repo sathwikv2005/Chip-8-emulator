@@ -7,6 +7,7 @@ class Chip8 {
    public:
     Chip8();
     void loadROM(const std::string& path);
+    void cycle();
 
     const std::array<uint64_t, 32>& getDisplay() const;
     void clearDisplay();
