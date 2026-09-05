@@ -1,5 +1,4 @@
-#include <bits/chrono.h>
-
+#include <chrono>
 #include <iostream>
 
 #include "chip8.hpp"
