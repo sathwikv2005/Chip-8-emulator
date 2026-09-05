@@ -25,7 +25,9 @@ class Chip8 {
     // variable registers
     std::array<uint8_t, 16> v{};
 
+    // stack
     std::array<uint16_t, 16> stack{};
+    uint8_t sp = 0;
 
     // Each row has 64 pixels, hence each pixel is a bit in a uint64_t
     // 64px*32px
