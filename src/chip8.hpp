@@ -12,6 +12,9 @@ class Chip8 {
     const std::array<uint64_t, 32>& getDisplay() const;
     void clearDisplay();
 
+    void setKey(uint8_t key, bool pressed);
+    bool isPressed(uint8_t key) const;
+
     void decayDelayTimer();
     void decaySoundTimer();
 
@@ -34,6 +37,9 @@ class Chip8 {
     // timers
     uint8_t delayTimer{};
     uint8_t soundTimer{};
+
+    // keypad
+    uint16_t keypad = 0;
 
     // a chip-8 program starts from the memory address 0x200.
     uint16_t pc{0x200};

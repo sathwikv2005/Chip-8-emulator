@@ -30,6 +30,17 @@ const std::array<uint64_t, 32>& Chip8::getDisplay() const { return display; }
 
 void Chip8::clearDisplay() { display.fill(0); }
 
+void Chip8::setKey(uint8_t key, bool pressed) {
+    if (pressed)
+        keypad |= (uint16_t{1} << key);
+    else
+        keypad &= ~(uint16_t{1} << key);
+}
+
+bool Chip8::isPressed(uint8_t key) const {
+    return keypad & (uint16_t{1} << key);
+}
+
 void Chip8::decayDelayTimer() {
     if (delayTimer > 0) delayTimer--;
 }
