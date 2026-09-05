@@ -17,32 +17,32 @@ void run(const char* path) {
     auto lastCycle = std::chrono::steady_clock::now();
     auto lastRender = std::chrono::steady_clock::now();
 
-    const double cycleTime = 1.0 / CPU_CYCLES_PER_SEC;
+    const double cyclePeriod = 1.0 / CPU_CYCLES_PER_SEC;
 
-    const double renderTime = 1.0 / DISPLAY_REFRESH_RATE;
+    const double renderPeriod = 1.0 / DISPLAY_REFRESH_RATE;
 
     while (true) {
         auto now = std::chrono::steady_clock::now();
         auto elapsed = std::chrono::duration<double>(now - lastCycle);
-        if (elapsed.count() >= cycleTime) {
+        if (elapsed.count() >= cyclePeriod) {
             chip8.cycle();
 
-            // add cycleTime instead of setting it to `now` to prevent timing
-            // drifts.
+            // add cyclePeriod instead of setting it to `now` to prevent timing
+            // drift.
             lastCycle +=
                 std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-                    std::chrono::duration<double>(cycleTime));
+                    std::chrono::duration<double>(cyclePeriod));
         }
 
         auto renderElapsed = std::chrono::duration<double>(now - lastRender);
-        if (renderElapsed.count() >= renderTime) {
+        if (renderElapsed.count() >= renderPeriod) {
             renderer.render();
 
-            // add renderTime instead of setting it to `now` to prevent timing
-            // drifts.
+            // add renderPeriod instead of setting it to `now` to prevent timing
+            // drift.
             lastRender +=
                 std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-                    std::chrono::duration<double>(renderTime));
+                    std::chrono::duration<double>(renderPeriod));
         }
     }
 }
