@@ -122,8 +122,10 @@ void Chip8::executeOpCode() {
         case 0x9000:  // 9XY0 - SNE Vx, Vy
             break;
 
-        case 0xA000:  // ANNN - LD I, addr
+        case 0xA000: {  // ANNN - LD I, addr
+            I = nnn;
             break;
+        }
 
         case 0xB000:  // BNNN - JP V0, addr
             break;
