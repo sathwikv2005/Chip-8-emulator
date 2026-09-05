@@ -67,7 +67,8 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0x00EE:  // RET
-                    // return from subroutine
+                    if (sp == 0) throw std::runtime_error("Stack underflow");
+                    pc = stack[--sp];
                     break;
 
                 default:
@@ -87,6 +88,9 @@ void Chip8::executeOpCode() {
         }
 
         case 0x2000:  // 2NNN - CALL addr
+            if (sp >= stack.size()) throw std::runtime_error("Stack overflow");
+            stack[sp++] = pc;
+            pc = nnn;
             break;
 
         case 0x3000:  // 3XNN - SE Vx, byte
