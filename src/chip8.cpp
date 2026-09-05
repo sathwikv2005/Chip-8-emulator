@@ -5,6 +5,7 @@
 #include <fstream>
 
 #define GET_OPCODE() (((uint16_t)memory[pc++]) << 8 | memory[pc++])
+#define ADVANCE() (pc += 2)
 
 Chip8::Chip8() {
     // load font
@@ -94,12 +95,16 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x3000:  // 3XNN - SE Vx, byte
+            if (v[x] == nn) ADVANCE();
             break;
 
         case 0x4000:  // 4XNN - SNE Vx, byte
+            if (v[x] != nn) ADVANCE();
             break;
 
         case 0x5000:  // 5XY0 - SE Vx, Vy
+            // last nibble must be a zero
+            if (n == 0 && v[x] == v[y]) ADVANCE();
             break;
 
         case 0x6000:  // 6XNN - LD Vx, byte
@@ -146,6 +151,8 @@ void Chip8::executeOpCode() {
             break;
 
         case 0x9000:  // 9XY0 - SNE Vx, Vy
+            // last nibble must be a zero
+            if (n == 0 && v[x] != v[y]) ADVANCE();
             break;
 
         case 0xA000: {  // ANNN - LD I, addr
