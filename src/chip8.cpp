@@ -187,6 +187,7 @@ void Chip8::executeOpCode() {
         }
 
         case 0xB000:  // BNNN - JP V0, addr
+            pc = v[0] + nnn;
             break;
 
         case 0xC000:  // CXNN - RND Vx, byte
