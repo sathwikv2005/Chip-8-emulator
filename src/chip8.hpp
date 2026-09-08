@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <random>
 #include <string>
 
 // font
@@ -75,6 +76,9 @@ class Chip8 {
     void decaySoundTimer();
 
    private:
+    std::mt19937 rng;
+    std::uniform_int_distribution<uint8_t> randomByte;
+
     // 4KB RAM
     std::array<uint8_t, 4096> memory{};
 

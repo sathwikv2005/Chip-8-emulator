@@ -8,7 +8,7 @@
 #define ADVANCE() (pc += 2)
 #define VF v[0xf]
 
-Chip8::Chip8() {
+Chip8::Chip8() : rng(std::random_device{}()), randomByte(0, 255) {
     // load font
     std::copy(FONT.begin(), FONT.end(), memory.begin() + FONT_START);
 }
