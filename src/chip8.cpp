@@ -274,6 +274,7 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0x29:  // FX29 - LD F, Vx
+                    I = FONT_START + (v[x] * 5);
                     break;
 
                 case 0x33:  // FX33 - LD B, Vx
