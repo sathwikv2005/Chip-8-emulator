@@ -227,6 +227,7 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0xA1:  // EXA1 - SKNP Vx
+                    if (!isPressed(v[x])) ADVANCE();
                     break;
             }
             break;
