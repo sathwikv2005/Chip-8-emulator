@@ -286,10 +286,20 @@ void Chip8::executeOpCode() {
                 }
 
                 case 0x55:  // FX55 - LD [I], Vx
+                {
+                    for (uint8_t i = 0; i <= x; i++) {
+                        memory[I + i] = v[i];
+                    }
                     break;
+                }
 
                 case 0x65:  // FX65 - LD Vx, [I]
+                {
+                    for (uint8_t i = 0; i <= x; i++) {
+                        v[i] = memory[I + i];
+                    }
                     break;
+                }
             }
             break;
     }
