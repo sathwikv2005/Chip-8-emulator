@@ -235,15 +235,18 @@ void Chip8::executeOpCode() {
         case 0xF000:
             switch (nn) {
                 case 0x07:  // FX07 - LD Vx, DT
+                    v[x] = delayTimer;
                     break;
 
                 case 0x0A:  // FX0A - LD Vx, K
                     break;
 
                 case 0x15:  // FX15 - LD DT, Vx
+                    delayTimer = v[x];
                     break;
 
                 case 0x18:  // FX18 - LD ST, Vx
+                    soundTimer = v[x];
                     break;
 
                 case 0x1E:  // FX1E - ADD I, Vx
