@@ -4,7 +4,7 @@
 #include "chip8.hpp"
 #include "renderer.hpp"
 
-#define CPU_CYCLES_PER_SEC 500
+#define CPU_CYCLES_PER_SEC 700
 #define DISPLAY_REFRESH_RATE 60
 #define TIMER_DECAY 60
 
