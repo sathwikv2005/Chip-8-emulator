@@ -278,7 +278,12 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0x33:  // FX33 - LD B, Vx
+                {
+                    memory[I] = v[x] / 100;
+                    memory[I + 1] = (v[x] / 10) % 10;
+                    memory[I + 2] = v[x] % 10;
                     break;
+                }
 
                 case 0x55:  // FX55 - LD [I], Vx
                     break;
