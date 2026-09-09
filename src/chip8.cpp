@@ -44,6 +44,14 @@ bool Chip8::isPressed(uint8_t key) const {
     return keypad & (uint16_t{1} << key);
 }
 
+std::optional<uint8_t> Chip8::getPressedKey() const {
+    for (uint8_t key = 0; key < 16; ++key) {
+        if (isPressed(key)) return key;
+    }
+
+    return std::nullopt;
+}
+
 void Chip8::decayDelayTimer() {
     if (delayTimer > 0) delayTimer--;
 }
@@ -191,6 +199,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0xC000:  // CXNN - RND Vx, byte
+            v[x] = randomByte(rng) & nn;
             break;
 
         case 0xD000: {  // DXYN - DRW Vx, Vy, nibble
@@ -222,9 +231,11 @@ void Chip8::executeOpCode() {
         case 0xE000:
             switch (nn) {
                 case 0x9E:  // EX9E - SKP Vx
+                    if (isPressed(v[x])) ADVANCE();
                     break;
 
                 case 0xA1:  // EXA1 - SKNP Vx
+                    if (!isPressed(v[x])) ADVANCE();
                     break;
             }
             break;
@@ -232,31 +243,63 @@ void Chip8::executeOpCode() {
         case 0xF000:
             switch (nn) {
                 case 0x07:  // FX07 - LD Vx, DT
+                    v[x] = delayTimer;
                     break;
 
                 case 0x0A:  // FX0A - LD Vx, K
+                {
+                    auto key = getPressedKey();
+
+                    if (!key.has_value()) {
+                        pc -= 2;
+                    } else {
+                        v[x] = key.value();
+                    }
+
                     break;
+                }
 
                 case 0x15:  // FX15 - LD DT, Vx
+                    delayTimer = v[x];
                     break;
 
                 case 0x18:  // FX18 - LD ST, Vx
+                    soundTimer = v[x];
                     break;
 
                 case 0x1E:  // FX1E - ADD I, Vx
+                    uint16_t sum = I + v[x];
+                    VF = sum > 0xFFF;
+                    I = sum & 0xFFF;
                     break;
 
                 case 0x29:  // FX29 - LD F, Vx
+                    I = FONT_START + (v[x] * 5);
                     break;
 
                 case 0x33:  // FX33 - LD B, Vx
+                {
+                    memory[I] = v[x] / 100;
+                    memory[I + 1] = (v[x] / 10) % 10;
+                    memory[I + 2] = v[x] % 10;
                     break;
+                }
 
                 case 0x55:  // FX55 - LD [I], Vx
+                {
+                    for (uint8_t i = 0; i <= x; i++) {
+                        memory[I + i] = v[i];
+                    }
                     break;
+                }
 
                 case 0x65:  // FX65 - LD Vx, [I]
+                {
+                    for (uint8_t i = 0; i <= x; i++) {
+                        v[i] = memory[I + i];
+                    }
                     break;
+                }
             }
             break;
     }
