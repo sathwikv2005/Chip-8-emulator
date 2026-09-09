@@ -223,6 +223,7 @@ void Chip8::executeOpCode() {
         case 0xE000:
             switch (nn) {
                 case 0x9E:  // EX9E - SKP Vx
+                    if (isPressed(v[x])) ADVANCE();
                     break;
 
                 case 0xA1:  // EXA1 - SKNP Vx
