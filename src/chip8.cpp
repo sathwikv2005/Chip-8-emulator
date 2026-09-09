@@ -268,10 +268,12 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0x1E:  // FX1E - ADD I, Vx
+                {
                     uint16_t sum = I + v[x];
                     VF = sum > 0xFFF;
                     I = sum & 0xFFF;
                     break;
+                }
 
                 case 0x29:  // FX29 - LD F, Vx
                     I = FONT_START + (v[x] * 5);
