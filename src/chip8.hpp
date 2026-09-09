@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <optional>
 #include <random>
 #include <string>
 
@@ -71,6 +72,7 @@ class Chip8 {
 
     void setKey(uint8_t key, bool pressed);
     bool isPressed(uint8_t key) const;
+    std::optional<uint8_t> getPressedKey() const;
 
     void decayDelayTimer();
     void decaySoundTimer();

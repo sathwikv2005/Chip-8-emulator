@@ -44,6 +44,14 @@ bool Chip8::isPressed(uint8_t key) const {
     return keypad & (uint16_t{1} << key);
 }
 
+std::optional<uint8_t> Chip8::getPressedKey() const {
+    for (uint8_t key = 0; key < 16; ++key) {
+        if (isPressed(key)) return key;
+    }
+
+    return std::nullopt;
+}
+
 void Chip8::decayDelayTimer() {
     if (delayTimer > 0) delayTimer--;
 }
