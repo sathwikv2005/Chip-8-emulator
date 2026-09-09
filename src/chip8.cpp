@@ -247,7 +247,17 @@ void Chip8::executeOpCode() {
                     break;
 
                 case 0x0A:  // FX0A - LD Vx, K
+                {
+                    auto key = getPressedKey();
+
+                    if (!key.has_value()) {
+                        pc -= 2;
+                    } else {
+                        v[x] = key.value();
+                    }
+
                     break;
+                }
 
                 case 0x15:  // FX15 - LD DT, Vx
                     delayTimer = v[x];
