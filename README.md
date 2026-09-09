@@ -19,5 +19,5 @@ The project implements the CHIP-8 virtual machine, including opcode execution, m
 Pass the CHIP-8 ROM path as a command-line argument:
 
 ```powershell
-chip8.exe ..\roms\IBM_Logo.ch8
+chip8.exe ..\roms\Space_Invaders.ch8
 ```
