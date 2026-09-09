@@ -191,6 +191,7 @@ void Chip8::executeOpCode() {
             break;
 
         case 0xC000:  // CXNN - RND Vx, byte
+            v[x] = randomByte(rng) & nn;
             break;
 
         case 0xD000: {  // DXYN - DRW Vx, Vy, nibble
